@@ -62,7 +62,8 @@ To use this project template for your own repository, follow these steps:
    - Click **"New Issue"**
    - Add a clear, descriptive title
    - Provide details in the description (use Markdown for formatting)
-   - Add labels, assignees, and link to projects
+   - Add labels, assignees, and link to project
+   - Fill the Fields of the issue according to the your understanding. For more information on the fields, please look into [Understanding Issue Field Options](#3-understanding-issue-field-options)
    - Click **"Submit new issue"**
 
 2. **From the Project Board**
@@ -128,34 +129,29 @@ GitHub Projects allows custom fields to track various aspects of your work.  Her
 
 #### **Status**
 Tracks the current state of the issue through the workflow:
-- **📋 Backlog**: Not yet started, in the product backlog
 - **📝 Todo**: Ready to be worked on in the current sprint
 - **🏗️ In Progress**:  Actively being worked on
-- **👀 In Review**: Completed and awaiting review/QA
+- **👀 Under Review**: Completed and awaiting review/QA
 - **✅ Done**: Completed and accepted
-- **❌ Cancelled**: Won't be implemented
+- **❌ Blocked**: This has been blocked by dependencies or other priorities
 
 #### **Priority**
 Indicates the urgency and importance of the work:
-- **🔴 Critical/P0**:  Blockers, production issues, must be done immediately
-- **🟠 High/P1**: Important features, should be done soon
-- **🟡 Medium/P2**: Standard priority, planned work
-- **🟢 Low/P3**: Nice to have, can be deferred
+- **🔴 Critical/P1**:  Blockers, production issues, must be done immediately
+- **🟠 High/P2**: Important features, should be done soon
+- **🟡 Medium/P3**: Standard priority, planned work
+- **🟢 Low/P4**: Nice to have, can be deferred
 - **⚪ None**:  Not yet prioritized
 
 *Use the MoSCoW method:  Must have, Should have, Could have, Won't have*
 
-#### **Size/Story Points**
+#### **Size**
 Estimates the complexity and effort required (Fibonacci sequence):
-- **1**:  Trivial change, <1 hour
-- **2**:  Simple task, few hours
-- **3**: Small feature, ~1 day
-- **5**: Medium feature, 2-3 days
-- **8**: Large feature, ~1 week
-- **13**:  Very large, requires breakdown
-- **21+**: Epic-sized, must be broken into smaller stories
+- **S**:  Small feature, ~1 day
+- **M**: Medium feature, 2-3 days
+- **L**: Large feature, ~1 week
 
-*Story points are relative estimates, not absolute time*
+*Size is relative estimate, not absolute time*
 
 #### **Hours (Estimated/Actual)**
 - **Estimated Hours**: Initial time estimate
@@ -165,7 +161,7 @@ Estimates the complexity and effort required (Fibonacci sequence):
 #### **Sprint**
 Tracks which sprint the issue belongs to:
 - **Sprint 1, Sprint 2, etc.**
-- Typically 1-4 weeks per sprint
+- Typically 1-2 weeks per sprint
 - Use sprint field to filter current work
 
 #### **Assignee**
@@ -179,14 +175,6 @@ Categorize issues by type, component, or theme:
 - **Type**: `bug`, `feature`, `enhancement`, `documentation`
 - **Component**: `frontend`, `backend`, `database`, `API`
 - **Theme**: `security`, `performance`, `ux`, `infrastructure`
-
-### Custom Fields
-
-You can add custom fields based on your team's needs: 
-- **Epic**:  Link to parent epic
-- **Acceptance Criteria**: Checkboxes for definition of done
-- **Team**:  For multi-team projects
-- **Release**: Target release version
 
 ---
 
@@ -243,128 +231,162 @@ You can add custom fields based on your team's needs:
 
 ## 5. Project Views Explained
 
-GitHub Projects supports multiple views to visualize your work differently.  Here are common views for SCRUM: 
+This template uses five focused views aligned with SCRUM. Configure them as below to match the attached views.
 
-### View 1: **Sprint Board (Kanban)**
+### View 1: **Board**
 
-**Purpose**: Track daily progress of sprint work
+**Purpose**: Track day-to-day sprint work on a simple board
 
-**Layout**:  Table or Board grouped by Status
+**Layout**: Board or Table grouped by Status
 
 **Columns**:
-- Backlog → Todo → In Progress → In Review → Done
+- Title
+- Assignees
+- Status
+- Priority
+- Size
+- Hours
+- Iteration
+- Linked pull requests
+- Sub-issues progress
 
 **Filters**:
-- `sprint: current` - Shows only current sprint items
-- `status:not: Done` - Hides completed work
+- `status:! Done`
+- Optional: `iteration:current`
 
 **Use Cases**:
 - Daily standups
 - Visual workflow management
-- Identifying bottlenecks
+- Bottleneck identification
 
 **Configuration**:
 ```
 Group by: Status
-Sort by: Priority
-Filter: sprint:current AND status:! Done
+Sort by: Priority, then Size
+Filter: status:! Done AND iteration:current
+Columns: Title, Assignees, Status, Priority, Size, Hours, Iteration, Linked pull requests, Sub-issues progress
 ```
 
-### View 2: **Product Backlog**
+### View 2: **Team Workload**
 
-**Purpose**:  Manage and prioritize all upcoming work
+**Purpose**: Understand workload, capacity, and dates by assignee
 
-**Layout**: Table view
+**Layout**: Table grouped by Assignees
 
-**Columns Visible**:
+**Columns**:
+- Title
+- Assignees
+- Status
+- Hours
+- Iteration
+- Start date
+- Target date
+- Linked pull requests
+- Sub-issues progress
+
+**Filters**:
+- `iteration:current` (adjust as needed)
+
+**Use Cases**:
+- Capacity planning
+- Balancing workload across the team
+- Tracking start/target dates
+
+**Configuration**:
+```
+Group by: Assignees
+Sort by: Target date
+Filter: iteration:current
+Columns: Title, Assignees, Status, Hours, Iteration, Start date, Target date, Linked pull requests, Sub-issues progress
+```
+
+### View 3: **Current Iteration**
+
+**Purpose**: Focus only on items in the active iteration
+
+**Layout**: Table
+
+**Columns**:
+- Title
+- URL (optional)
+- Assignees
+- Status
+- Linked pull requests
+- Sub-issues progress
+
+**Filters**:
+- `iteration:current`
+- Optional: `status:! Done`
+
+**Use Cases**:
+- Sprint execution and tracking
+- Preparing for sprint review
+
+**Configuration**:
+```
+Group by: None (flat list)
+Sort by: Status, then Title
+Filter: iteration:current AND status:! Done
+Columns: Title, URL, Assignees, Status, Linked pull requests, Sub-issues progress
+```
+
+### View 4: **Roadmap**
+
+**Purpose**: High-level planning and tracking of larger items
+
+**Layout**: Table (Timeline optional if you add dates)
+
+**Columns**:
+- Title
+- Assignees
+- Status
+
+**Filters**:
+- Optional: `status:! Done` to focus on active work
+
+**Use Cases**:
+- Release planning
+- Stakeholder updates
+- Epic progress overview
+
+**Configuration**:
+```
+Group by: None
+Sort by: Title
+Filter: status:! Done
+Columns: Title, Assignees, Status
+```
+
+### View 5: **My Items**
+
+**Purpose**: Personal focus view for an individual contributor
+
+**Layout**: Table filtered to your assignments
+
+**Columns**:
 - Title
 - Priority
-- Size (Story Points)
-- Assignee
-- Sprint
-- Labels
-
-**Sort Order**:
-- Primary: Priority (High to Low)
-- Secondary: Story Points (Small to Large)
+- Size
+- Hours
+- Iteration
+- Linked pull requests
+- Sub-issues progress
 
 **Filters**:
-- `status: Backlog` or `status:Todo`
-- `-label:archived`
+- `assignee:@me`
+- Optional: `status:! Done`
 
 **Use Cases**:
-- Backlog refinement meetings
-- Sprint planning
-- Prioritization discussions
+- Daily planning
+- Reviewing personal workload within the sprint
 
-### View 3: **Current Sprint**
-
-**Purpose**: Focus on active sprint work only
-
-**Layout**: Board or Table
-
-**Filters**:
-- `sprint:"Sprint X"` - Replace X with current sprint number
-- Shows all statuses for current sprint
-
-**Metrics Shown**:
-- Total story points in sprint
-- Completed story points
-- Remaining work
-
-**Use Cases**:
-- Sprint execution
-- Progress tracking
-- Sprint review preparation
-
-### View 4: **Burndown Chart** (If available)
-
-**Purpose**: Track sprint progress over time
-
-**Type**: Chart/Insights view
-
-**Metrics**:
-- Ideal burndown line
-- Actual completed work
-- Remaining work by day
-
-**Use Cases**:
-- Sprint health monitoring
-- Velocity tracking
-- Forecasting completion
-
-### View 5: **By Assignee**
-
-**Purpose**:  See workload distribution
-
-**Layout**: Table grouped by Assignee
-
-**Shows**:
-- All issues per person
-- Story points per person
-- Status of each person's work
-
-**Use Cases**:
-- Workload balancing
-- Capacity planning
-- Team member check-ins
-
-### View 6: **Roadmap/Timeline**
-
-**Purpose**: Long-term planning and epic tracking
-
-**Layout**:  Roadmap/Timeline view
-
-**Shows**:
-- Epics and their timelines
-- Sprint boundaries
-- Milestone dates
-- Dependencies
-
-**Use Cases**: 
-- Release planning
-- Stakeholder communication
-- Strategic planning
+**Configuration**:
+```
+Group by: Status (optional)
+Sort by: Priority
+Filter: assignee:@me AND status:! Done
+Columns: Title, Priority, Size, Hours, Iteration, Linked pull requests, Sub-issues progress
+```
 
 ---
 
@@ -375,8 +397,8 @@ Filter: sprint:current AND status:! Done
 1. **Review Backlog**:  Ensure stories are refined and estimated
 2. **Set Sprint Goal**: Define clear objective for the sprint
 3. **Capacity Planning**: Calculate team capacity (story points)
-4. **Select Stories**: Pull highest priority items that fit capacity
-5. **Break Down Stories**: Create sub-issues for each story
+4. **Select Issues**: Pull highest priority items that fit capacity
+5. **Break Down Issues**: Create sub-issues for each story
 6. **Assign Work**: Team members commit to specific issues
 
 ### Daily Standup
@@ -462,31 +484,6 @@ GitHub Projects supports automation workflows:
 - **Draft PRs**:  Keep status "In Progress" for draft PRs
 - **Review Status**: Move to "In Review" when PR ready
 - **Merge and Close**: Auto-move to Done on merge
-
-### Keyboard Shortcuts
-
-- **`C`**: Create new issue
-- **`E`**: Edit issue
-- **`Ctrl/Cmd + Enter`**: Save and close
-- **`/`**: Focus search
-- **`?`**: Show all shortcuts
-
-### Resources
-
-- [GitHub Projects Documentation](https://docs.github.com/en/issues/planning-and-tracking-with-projects)
-- [Scrum Guide](https://scrumguides.org/)
-- [Agile Estimating and Planning](https://www.mountaingoatsoftware.com/agile)
-
----
-
-## Getting Help
-
-If you encounter issues or have questions:
-
-1. Check the [GitHub Community Discussions](https://github.com/orgs/community/discussions)
-2. Review [GitHub Projects Changelog](https://github.blog/changelog/label/projects/)
-3. Contact your Scrum Master or Project Lead
-4. Open an issue in this repository for template-specific questions
 
 ---
 
